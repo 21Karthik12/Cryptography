@@ -83,19 +83,23 @@ public:
     class BitList {
     private:
         vector<Bit> bits;
+
     public:
         BitList() {}
+
         BitList(uint bitstring) {
             do {
                 bits.emplace_back(bitstring & 1);
                 bitstring >>= 1;
             } while (bitstring > 0);
         }
+
         BitList(const string& bitstring) {
             for (int i = bitstring.size() - 1; i >= 0; i--) {
                 bits.emplace_back(bitstring[i] - '0');
             }
         }
+
         Bit& operator[] (int i) {
             if (i < bits.size()) {
                 return bits[i];
@@ -105,6 +109,7 @@ public:
             }
             return bits[i];
         }
+
         void operator= (uint bitstring) {
             bits.clear();
             do {
@@ -112,12 +117,14 @@ public:
                 bitstring >>= 1;
             } while (bitstring > 0);
         }
+
         void operator= (const string& bitstring) {
             bits.clear();
             for (int i = bitstring.size() - 1; i >= 0; i--) {
                 bits.emplace_back(bitstring[i] - '0');
             }
         }
+
         void operator= (const BitList& list) {
             bits.clear();
             size_t size = list.bits.size();
@@ -125,6 +132,7 @@ public:
                 bits.emplace_back(list.bits[i]);
             }
         }
+
         bool operator== (const BitList& list) {
             if (bits.size() != list.bits.size()) {
                 return false;
@@ -136,21 +144,27 @@ public:
             }
             return true;
         }
+
         bool operator!= (const BitList& list) {
             return !operator== (list);
         }
+
         void add(Bit bit) {
             bits.push_back(bit);
         }
+
         void add_front(Bit bit) {
             bits.insert(bits.begin(), bit);
         }
+
         size_t size() {
             return bits.size();
         }
+
         void pop() {
             bits.pop_back();
         }
+
         void left_shift() {
             add_front(0);
         }
@@ -160,29 +174,39 @@ public:
     private:
         uint value;
     public:
+
         Value (uint v) : value(v) {}
+
         Value () : value(0) {}
+
         uint get_value() {
             return value;
         }
+
         void operator= (Value v) {
             value = v.value;
         }
+
         void operator= (uint v) {
             value = v;
         }
+
         Value operator+ (Value v) {
             return Value(value + v.value);
         }
+
         void operator+= (Value v) {
             operator= (operator+ (v));
         }
+
         Value operator- (Value v) {
             return Value(value - v.value);
         }
+
         void operator-= (Value v) {
             operator= (operator- (v));
         }
+
         friend ostream& operator<< (ostream& strm, const Value& v) {
             strm << setw(2) << setfill('0') << uppercase << hex << v.value;
             return strm;
@@ -354,6 +378,7 @@ public:
     void operator/= (Polynomial poly) {
         operator= (operator/ (poly));
     }
+
     Polynomial inverse() {
         trim();
         Polynomial x, y;
@@ -361,6 +386,7 @@ public:
         x.update_value();
         return x;
     }
+
     Polynomial operator^ (int p) {
         if (operator== (0)) {
             return 0;
@@ -380,13 +406,16 @@ public:
         result.update_value();
         return result;
     }
+
     void operator^= (int p) {
         operator= (operator^ (p));
     }
+
     size_t size() {
         trim();
         return coefficients.size();
     }
+
     friend ostream& operator<< (ostream& strm, Polynomial poly) {
         vector<string> terms;
         for (int i = poly.size() - 1; i > 0; i--) {
@@ -493,6 +522,7 @@ private:
     }
 
     vector<vector<Polynomial>> terms;
+
 public:
     S_Box() {
         init();
